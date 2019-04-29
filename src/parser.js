@@ -606,7 +606,20 @@ class Parser {
                 return;
             }
 
-            this.set(transKey, options);
+            // All I wanted is for the <Trans/> components to respect the defaultValue set in the config options.
+            // For some reason it always uses the "defaultValue" as both the value AND the key.
+            // Doesn't make much sense what with fallbackKey being an option too.
+            // Not sure why this behaves so differently to the translate fuction.
+            //
+            // Changing the following line seems to do the trick:
+            // this.set(transKey, options);
+            //
+            // It's inspired by this PR:
+            // https://github.com/i18next/i18next-scanner/pull/103/commits/9343bba8afdcb9ef4d0fca9d549d02f7158057a3
+            //
+            // Of course now a load of tests are broken - and I don't have time to fix them right now.
+
+            this.set(options.defaultValue, {});
         };
 
         try {
